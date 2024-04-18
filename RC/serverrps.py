@@ -36,16 +36,16 @@ server.bind((host, port))
 server.listen(number_of_clients)
 
 connections = {}       #DICTIONARELE TREBUIE MODIFICATE
-choices = {}
+choices = {}           #AICI LA FEL
 player_number = 1
 
-while len(connections) < number_of_clients:
+while len(connections) < number_of_clients:       #DE AICI 
     conn, addr = server.accept()
     player = f"player{player_number}"
     connections[player] = conn
     print(f"{player} connected")
     start_new_thread(client_thread, (conn, player))
-    player_number += 1
+    player_number += 1                          #PANA AICI DE MODIFICAT IN FUNCTIE DE CE AI
 
 while len(connections) > 0:
     pass
