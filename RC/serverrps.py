@@ -1,7 +1,7 @@
 import socket
 from _thread import start_new_thread
 
-def determine_winner(p1, p2):
+def determine_winner(p1, p2):     #DE MODIFICAT IN FUNCTIE DE CERINTA
     if p1 == p2:
         return "draw"
     elif (p1 == "rock" and p2 == "scissors") or (p1 == "scissors" and p2 == "paper") or (p1 == "paper" and p2 == "rock"):
@@ -10,35 +10,36 @@ def determine_winner(p1, p2):
         return "player2"
 
 def client_thread(conn, player):
-    conn.send(player.encode())
-    while True:
+    conn.send(player.encode()) #CONEXIUNEA CU CLIENTUL 
+    while True:         
         try:
-            choice = conn.recv(1024).decode()
-            if not choice or choice == "surrender":
+            choice = conn.recv(1024).decode()     
+            if not choice or choice == "surrender":  #DE AICI
                 break
             choices[player] = choice
-            if len(choices) == 2:
+            if len(choices) == number_of_clients:
                 winner = determine_winner(choices["player1"], choices["player2"])
                 for p, c in connections.items():
-                    c.send(winner.encode())
-                choices.clear()
+                    p.send(winner.encode())          #PANA AICI DE MODIFICAT IN FUNCTIE DE CE AI
+                choices.clear()            
         except ConnectionResetError:
             break
     print(f"{player} disconnected")
-    del connections[player]
+    del connections[player]            
     conn.close()
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = "127.0.0.1"
 port = 12345
+number_of_clients=2
 server.bind((host, port))
-server.listen(2)
+server.listen(number_of_clients)
 
-connections = {}
+connections = {}       #DICTIONARELE TREBUIE MODIFICATE
 choices = {}
 player_number = 1
 
-while len(connections) < 2:
+while len(connections) < number_of_clients:
     conn, addr = server.accept()
     player = f"player{player_number}"
     connections[player] = conn

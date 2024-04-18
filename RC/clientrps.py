@@ -5,13 +5,13 @@ def main():
     host = "127.0.0.1"
     port = 12345
     client.connect((host, port))
-    player = client.recv(1024).decode()
-    print(f"You are {player}")
+    player = client.recv(1024).decode() #DE MODIFICAT
+    print(f"You are {player}") #DE MODIFICAT
 
     while True:
-        choice = input("Enter your choice (rock, paper, scissors) or 'surrender' to quit: ").lower()
-        client.send(choice.encode())
-        if choice == "surrender":
+        choice = input("Enter your choice (rock, paper, scissors) or 'surrender' to quit: ").lower() #DE MODIFICAT INPUTUL
+        client.send(choice.encode())        #DE MODIFICAT CHOICE CU CE AI
+        if choice == "surrender":       #DE AICI
             break
         result = client.recv(1024).decode()
         if result == player:
@@ -21,7 +21,7 @@ def main():
         else:
             print("You lose!")
     
-    print("Game over.")
+    print("Game over.")    #PANA AICI DE MODIFICAT IN FUNCTIE DE CE AI
     client.close()
 
 if __name__ == "__main__":

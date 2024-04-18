@@ -1,4 +1,5 @@
 import socket
+# import _thread  #for multi-server
 
 HOST='127.0.0.1'
 PORT=4040
@@ -59,6 +60,8 @@ if __name__ =="__main__":
     while True:
         client_sock,addr=listen_sock.accept()
         print(f"Connection from {addr}")
+        # thread=threading.Thread(target=handle_client, args=[client_sock,addr], daemon=True) #for multi-server
+        # thread.start() #for multi-server
         handle_client(client_sock,addr)  
         
 
